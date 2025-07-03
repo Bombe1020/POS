@@ -306,3 +306,38 @@ function logoutPOS() {
   window.location.href = "index.html"; // or "formflow-login.html"
 }
 
+function submitDayEnd() {
+  const floatStart = parseFloat(document.getElementById("floatStart").value) || 0;
+  const cashCount = parseFloat(document.getElementById("cashCount").value) || 0;
+  const cardTotal = parseFloat(document.getElementById("cardTotal").value) || 0;
+  const notes = document.getElementById("dayNotes").value || "";
+
+  const totalInRegister = floatStart + cashCount;
+  const timestamp = new Date().toLocaleString();
+
+  const report = {
+    timestamp,
+    floatStart,
+    cashCount,
+    cardTotal,
+    notes,
+    totalInRegister
+  };
+
+  // Save to localStorage
+  const reports = JSON.parse(localStorage.getItem("dayEndReports") || "[]");
+  reports.push(report);
+  localStorage.setItem("dayEndReports", JSON.stringify(reports));
+
+  alert("✅ Day End report saved.");
+
+  bootstrap.Modal.getInstance(document.getElementById("dayEndModal")).hide();
+  clearDayEndForm();
+}
+
+function clearDayEndForm() {
+  ["floatStart", "cashCount", "cardTotal", "dayNotes"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+}
+
