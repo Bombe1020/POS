@@ -311,6 +311,7 @@ function submitDayEnd() {
   const cashCount = parseFloat(document.getElementById("cashCount").value) || 0;
   const cardTotal = parseFloat(document.getElementById("cardTotal").value) || 0;
   const notes = document.getElementById("dayNotes").value || "";
+  const cashier = prompt("Enter cashier name:") || "Unknown";
 
   const totalInRegister = floatStart + cashCount;
   const timestamp = new Date().toLocaleString();
@@ -321,23 +322,17 @@ function submitDayEnd() {
     cashCount,
     cardTotal,
     notes,
-    totalInRegister
+    totalInRegister,
+    cashier
   };
 
-  // Save to localStorage
   const reports = JSON.parse(localStorage.getItem("dayEndReports") || "[]");
   reports.push(report);
   localStorage.setItem("dayEndReports", JSON.stringify(reports));
 
   alert("✅ Day End report saved.");
-
   bootstrap.Modal.getInstance(document.getElementById("dayEndModal")).hide();
   clearDayEndForm();
 }
 
-function clearDayEndForm() {
-  ["floatStart", "cashCount", "cardTotal", "dayNotes"].forEach(id => {
-    document.getElementById(id).value = "";
-  });
-}
 
